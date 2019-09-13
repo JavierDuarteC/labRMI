@@ -14,9 +14,9 @@ import java.util.Date;
 public class Estacion {
     private String nombre;
     private Date ultimoReporte;
-    private float tiempoSiguiente;
+    private int tiempoSiguiente;
 
-    public Estacion(String nombre, float tiempoSiguiente) {
+    public Estacion(String nombre, int tiempoSiguiente) {
         this.nombre = nombre;
         this.tiempoSiguiente = tiempoSiguiente;
     }
@@ -33,7 +33,7 @@ public class Estacion {
         this.ultimoReporte = timestamp;
     }
 
-    public float getTiempoSiguiente() {
+    public int getTiempoSiguiente() {
         return tiempoSiguiente;
     }
 }

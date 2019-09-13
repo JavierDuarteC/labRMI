@@ -11,6 +11,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
 import server.model.Estacion;
 
 /**
@@ -26,12 +28,12 @@ public class Server extends UnicastRemoteObject implements Interface1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        listaEstaciones.add(new Estacion("Provenza",8f));
-        listaEstaciones.add(new Estacion("Cañaveral",5f));
-        listaEstaciones.add(new Estacion("Lagos", 10f));
-        listaEstaciones.add(new Estacion("La estancia", 5f));
-        listaEstaciones.add(new Estacion("Palmichal", 4f));
-        listaEstaciones.add(new Estacion("Españolita", 32f));
+        listaEstaciones.add(new Estacion("Provenza",8));
+        listaEstaciones.add(new Estacion("Cañaveral",5));
+        listaEstaciones.add(new Estacion("Lagos", 10));
+        listaEstaciones.add(new Estacion("La estancia", 5));
+        listaEstaciones.add(new Estacion("Palmichal", 4));
+        listaEstaciones.add(new Estacion("Españolita", 32));
         
         try {
             Server obj = new Server();
@@ -48,8 +50,24 @@ public class Server extends UnicastRemoteObject implements Interface1 {
     }
 
     @Override
-    public float calcularTiempo(String parada) throws RemoteException {
-       return 1f;
+    public String calcularTiempo(String parada) throws RemoteException {
+        int index = 0;
+        for (int i = 0; i < listaEstaciones.size(); i++) {
+            if(listaEstaciones.get(i).getNombre()==parada){
+                index = i;
+                break;
+            }
+        }
+        if(listaEstaciones.get(index).getUltimoReporte() != null){
+            return "Perdio el bus lok";
+        }else{
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(listaEstaciones.get(index).getUltimoReporte());
+            calendar.add(Calendar.MINUTE, listaEstaciones.get(index).getTiempoSiguiente());
+            return calendar.getTime().toString();
+        }
+        
+       
     }
 
     @Override
@@ -62,6 +80,15 @@ public class Server extends UnicastRemoteObject implements Interface1 {
             }
         }
         listaEstaciones.get(index).setUltimoReporte(Calendar.getInstance().getTime());
+        if(index == listaEstaciones.size()-1){
+            resetTimes();
+        }
+    }
+    
+    public void resetTimes(){
+        for (int i = 0; i < listaEstaciones.size(); i++) {
+            listaEstaciones.get(i).setUltimoReporte(null);
+        }
     }
 
 }

@@ -16,5 +16,5 @@ import java.util.Date;
 public interface Interface1 extends Remote{
     
     public float calcularTiempo(String parada) throws RemoteException;
-    public boolean reportarParada(String parada) throws RemoteException;
+    public void reportarParada(String parada) throws RemoteException;
 }

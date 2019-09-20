@@ -62,7 +62,10 @@ public class Server extends UnicastRemoteObject implements Interface1 {
         }else{
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(listaEstaciones.get(index).getUltimoReporte());
-            calendar.add(Calendar.MINUTE, listaEstaciones.get(index).getTiempoSiguiente());
+            while(index>=0){
+                calendar.add(Calendar.MINUTE, listaEstaciones.get(index).getTiempoSiguiente());
+                index--;
+            }
             return calendar.getTime().toString();
         }
         

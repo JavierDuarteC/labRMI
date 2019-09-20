@@ -5,14 +5,13 @@
  */
 package server;
 
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-
 import server.model.Estacion;
 
 /**
@@ -44,7 +43,7 @@ public class Server extends UnicastRemoteObject implements Interface1 {
             
             
             System.out.println("Server ready");
-        } catch (Exception e) {
+        } catch (AlreadyBoundException | RemoteException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -53,7 +52,7 @@ public class Server extends UnicastRemoteObject implements Interface1 {
     public String calcularTiempo(String parada) throws RemoteException {
         int index = 0;
         for (int i = 0; i < listaEstaciones.size(); i++) {
-            if(listaEstaciones.get(i).getNombre()==parada){
+            if(listaEstaciones.get(i).getNombre().equals(parada)){
                 index = i;
                 break;
             }
@@ -74,7 +73,7 @@ public class Server extends UnicastRemoteObject implements Interface1 {
     public void reportarParada(String parada) throws RemoteException {
         int index = 0;
         for (int i = 0; i < listaEstaciones.size(); i++) {
-            if(listaEstaciones.get(i).getNombre()==parada){
+            if(listaEstaciones.get(i).getNombre().equals(parada)){
                 index = i;
                 break;
             }
@@ -85,7 +84,7 @@ public class Server extends UnicastRemoteObject implements Interface1 {
         }
     }
     
-    public void resetTimes(){
+    private void resetTimes(){
         for (int i = 0; i < listaEstaciones.size(); i++) {
             listaEstaciones.get(i).setUltimoReporte(null);
         }
